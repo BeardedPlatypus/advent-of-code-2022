@@ -1,0 +1,21 @@
+{
+	"name": "Existing Dockerfile",
+	"context": "..",
+	"dockerFile": "../Dockerfile",
+	"settings": {},
+	// Some common Python extensions which are loaded within this dev container
+	// Additional extensions can be added here according to personal taste.
+	"extensions": [
+		"ms-python.python",
+		"ms-vscode.test-adapter-converter",
+		"oderwat.indent-rainbow",
+		"njpwerner.autodocstring",
+		"njqdev.vscode-python-typehint"
+	],
+	"mounts": [
+		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+	],
+	// This ensures the environment is properly installed. 
+	"postCreateCommand": "poetry install --no-root --no-interaction --no-ansi",
+	"runArgs": ["--env-file",".devcontainer/devcontainer.env"],
+}
