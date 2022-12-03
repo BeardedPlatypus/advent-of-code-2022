@@ -16,17 +16,18 @@ def _retrieve_lines():
                 break
 
 
-
 class Hand(Enum):
     rock = 0
     paper = 1
     scissors = 2
+
 
 MAP_OPPONENT = {
     'A': Hand.rock,
     'B': Hand.paper,
     'C': Hand.scissors,
 }
+
 
 MAP_PLAYER = {
     'X': Hand.rock,
