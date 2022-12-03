@@ -1,3 +1,4 @@
+from challenges import day_01
 import typer
 
 
@@ -5,6 +6,7 @@ app = typer.Typer()
 
 
 mapping = {
+    "1.1": day_01.calculate
 }
 
 
