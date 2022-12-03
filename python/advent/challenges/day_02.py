@@ -2,9 +2,6 @@ from enum import Enum
 from pathlib import Path
 from typing import Iterable, Tuple
 
-import functools
-import typer
-
 
 _FILE = Path(__file__).parent.parent.parent.parent / "_data" / "day_02.txt"
 
@@ -38,10 +35,46 @@ MAP_PLAYER = {
 }
 
 
-def _pre_process(lines: Iterable[str]) -> Tuple[Hand, Hand]:
+def _pre_process_1(lines: Iterable[str]) -> Tuple[Hand, Hand]:
     for l in lines:
         oppenent, player = l.split(" ")
         yield (MAP_OPPONENT[oppenent], MAP_PLAYER[player])
+
+
+class Strategy(Enum):
+    loss = 0
+    draw = 1
+    win = 2
+
+
+MAP_STRATEGY = {
+    'X': Strategy.loss,
+    'Y': Strategy.draw,
+    'Z': Strategy.win,
+}
+
+
+MAP_PLAYER_STRATEGY = {
+    (Hand.rock, Strategy.loss) : Hand.scissors,
+    (Hand.rock, Strategy.draw) : Hand.rock,
+    (Hand.rock, Strategy.win) : Hand.paper,
+    (Hand.paper, Strategy.loss) : Hand.rock,
+    (Hand.paper, Strategy.draw) : Hand.paper,
+    (Hand.paper, Strategy.win) : Hand.scissors,
+    (Hand.scissors, Strategy.loss) : Hand.paper,
+    (Hand.scissors, Strategy.draw) : Hand.scissors,
+    (Hand.scissors, Strategy.win) : Hand.rock,
+}
+
+
+def _pre_process_2(lines: Iterable[str]) -> Tuple[Hand, Hand]:
+    for l in lines:
+        oppenent, player = l.split(" ")
+        opponent_hand = MAP_OPPONENT[oppenent]
+        player_strategy = MAP_STRATEGY[player]
+        player_hand = MAP_PLAYER_STRATEGY[(opponent_hand, player_strategy)]
+
+        yield (opponent_hand, player_hand)
 
 
 HAND_SCORE = {
@@ -68,7 +101,20 @@ def _calculate_score_player(opponent, player):
     return HAND_SCORE[player] + PLAY_SCORE[(opponent, player)]
 
 
-def calculate():
+class Mode(Enum):
+    one = 0
+    two = 1
+
+
+def calculate(mode: Mode):
     lines = _retrieve_lines()
-    values = _pre_process(lines)
+
+    if mode == Mode.one:
+        pre_process = _pre_process_1
+    elif mode == Mode.two:
+        pre_process = _pre_process_2
+    else:
+        raise RuntimeError("Not supported")
+
+    values = pre_process(lines)
     return sum((_calculate_score_player(*v) for v in values))

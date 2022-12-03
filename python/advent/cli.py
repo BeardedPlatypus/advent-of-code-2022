@@ -8,7 +8,8 @@ app = typer.Typer()
 mapping = {
     "1.1": lambda: day_01.calculate(1),
     "1.2": lambda: day_01.calculate(3),
-    "2.1": lambda: day_02.calculate(),
+    "2.1": lambda: day_02.calculate(day_02.Mode.one),
+    "2.2": lambda: day_02.calculate(day_02.Mode.two),
 }
 
 
