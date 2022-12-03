@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, List
 
 import functools
 
@@ -17,7 +17,7 @@ def _retrieve_lines():
                 break
 
 
-def _pre_process(lines: Iterable[str]):
+def _pre_process(lines: Iterable[str]) -> Iterable[int]:
     value = 0
     for l in lines:
         if l.strip() == "":
@@ -30,8 +30,15 @@ def _pre_process(lines: Iterable[str]):
         yield value
 
 
-def calculate():
-    # open lines
+def calculate(n: int):
     lines = _retrieve_lines()
     values = _pre_process(lines)
-    return functools.reduce(max, values, 0)
+    
+    def compute_next(acc: List, v: int) -> List: 
+        if v > acc[0]:
+            acc[0] = v
+            return sorted(acc)
+        else:
+            return acc
+
+    return sum(functools.reduce(compute_next, values, [0,] * n))
