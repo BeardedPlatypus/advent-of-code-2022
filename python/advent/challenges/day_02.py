@@ -1,4 +1,5 @@
 from advent.common import file_utils
+from advent.common.parts import Part
 
 from enum import Enum
 from typing import Iterable, Tuple
@@ -24,7 +25,7 @@ MAP_PLAYER = {
 }
 
 
-def _pre_process_1(lines: Iterable[str]) -> Tuple[Hand, Hand]:
+def _pre_process_part1(lines: Iterable[str]) -> Tuple[Hand, Hand]:
     for l in lines:
         oppenent, player = l.split(" ")
         yield (MAP_OPPONENT[oppenent], MAP_PLAYER[player])
@@ -56,7 +57,7 @@ MAP_PLAYER_STRATEGY = {
 }
 
 
-def _pre_process_2(lines: Iterable[str]) -> Tuple[Hand, Hand]:
+def _pre_process_part2(lines: Iterable[str]) -> Tuple[Hand, Hand]:
     for l in lines:
         oppenent, player = l.split(" ")
         opponent_hand = MAP_OPPONENT[oppenent]
@@ -90,20 +91,13 @@ def _calculate_score_player(opponent, player):
     return HAND_SCORE[player] + PLAY_SCORE[(opponent, player)]
 
 
-class Mode(Enum):
-    one = 0
-    two = 1
+PREPROCESSES = {
+    Part.one: _pre_process_part1,
+    Part.two: _pre_process_part2,
+}
 
 
-def calculate(mode: Mode):
+def calculate(part: Part):
     lines = file_utils.read_challenge_input_lines("day_02.txt")
-
-    if mode == Mode.one:
-        pre_process = _pre_process_1
-    elif mode == Mode.two:
-        pre_process = _pre_process_2
-    else:
-        raise RuntimeError("Not supported")
-
-    values = pre_process(lines)
+    values = PREPROCESSES[part](lines)
     return sum((_calculate_score_player(*v) for v in values))

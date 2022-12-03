@@ -1,4 +1,5 @@
 from advent.common import file_utils
+from advent.common.parts import Part
 
 from enum import Enum
 from typing import Iterable, Set, Sequence, Tuple
@@ -32,21 +33,16 @@ def _pre_process_part2(lines: Iterable[str]) -> Iterable[ElementPart2]:
             i = 0
 
 
-class Mode(Enum):
-    one = 0
-    two = 1
+PREPROCESSES = {
+    Part.one: _pre_process_part1,
+    Part.two: _pre_process_part2,
+}
 
 
-def calculate(mode: Mode):
+def calculate(part: Part):
     lines = file_utils.read_challenge_input_lines("day_03.txt")
+    values = PREPROCESSES[part](lines)
 
-    if mode == Mode.one:
-        values: Sequence[set[str]] = _pre_process_part1(lines)
-    elif mode == Mode.two:
-        values: Sequence[set[str]] = _pre_process_part2(lines)
-    else:
-        raise ValueError()
-    
     def compute(elements: Sequence[Set[str]]):
         return _PRIORITY_MAPPING[next(iter(functools.reduce((lambda s1, s2: s1 & s2), elements)))]
 
