@@ -1,20 +1,7 @@
-from pathlib import Path
+from advent.common import file_utils
 from typing import Iterable, List
 
 import functools
-
-
-_FILE = Path(__file__).parent.parent.parent.parent / "_data" / "day_01.txt"
-
-
-def _retrieve_lines():
-    with _FILE.open('r') as f:
-        while True:
-            line = f.readline()
-            yield line.strip()
-
-            if not line.endswith("\n"):
-                break
 
 
 def _pre_process(lines: Iterable[str]) -> Iterable[int]:
@@ -31,7 +18,7 @@ def _pre_process(lines: Iterable[str]) -> Iterable[int]:
 
 
 def calculate(n: int):
-    lines = _retrieve_lines()
+    lines = file_utils.read_challenge_input_lines("day_01.txt")
     values = _pre_process(lines)
     
     def compute_next(acc: List, v: int) -> List: 

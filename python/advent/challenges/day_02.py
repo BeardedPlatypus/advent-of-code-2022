@@ -1,19 +1,7 @@
+from advent.common import file_utils
+
 from enum import Enum
-from pathlib import Path
 from typing import Iterable, Tuple
-
-
-_FILE = Path(__file__).parent.parent.parent.parent / "_data" / "day_02.txt"
-
-
-def _retrieve_lines():
-    with _FILE.open('r') as f:
-        while True:
-            line = f.readline()
-            yield line.strip()
-
-            if not line.endswith("\n"):
-                break
 
 
 class Hand(Enum):
@@ -108,7 +96,7 @@ class Mode(Enum):
 
 
 def calculate(mode: Mode):
-    lines = _retrieve_lines()
+    lines = file_utils.read_challenge_input_lines("day_02.txt")
 
     if mode == Mode.one:
         pre_process = _pre_process_1

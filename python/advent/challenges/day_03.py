@@ -1,22 +1,10 @@
+from advent.common import file_utils
+
 from enum import Enum
-from pathlib import Path
 from typing import Iterable, Set, Sequence, Tuple
 
 import functools
 import string
-
-
-_FILE = Path(__file__).parent.parent.parent.parent / "_data" / "day_03.txt"
-
-
-def _retrieve_lines():
-    with _FILE.open('r') as f:
-        while True:
-            line = f.readline()
-            yield line.strip()
-
-            if not line.endswith("\n"):
-                break
 
 
 _PRIORITY_MAPPING = { c: i+1 for i, c in enumerate(string.ascii_letters)}
@@ -50,7 +38,7 @@ class Mode(Enum):
 
 
 def calculate(mode: Mode):
-    lines = _retrieve_lines()
+    lines = file_utils.read_challenge_input_lines("day_03.txt")
 
     if mode == Mode.one:
         values: Sequence[set[str]] = _pre_process_part1(lines)
