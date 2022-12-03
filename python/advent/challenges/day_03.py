@@ -1,6 +1,8 @@
+from enum import Enum
 from pathlib import Path
-from typing import Iterable, Set, Tuple
+from typing import Iterable, Set, Sequence, Tuple
 
+import functools
 import string
 
 
@@ -20,20 +22,44 @@ def _retrieve_lines():
 _PRIORITY_MAPPING = { c: i+1 for i, c in enumerate(string.ascii_letters)}
 
 
-Element = Tuple[Set[str], Set[str]]
+ElementPart1 = Tuple[Set[str], Set[str]]
+ElementPart2 = Tuple[Set[str], Set[str]]
 
-
-def _pre_process(lines: Iterable[str]) -> Iterable[Element]:
+def _pre_process_part1(lines: Iterable[str]) -> Iterable[ElementPart1]:
     for l in lines:
         split_index = int(len(l) / 2)
         yield (set(l[:split_index]), set(l[split_index:]))
 
 
-def calculate():
-    lines = _retrieve_lines()
-    values = _pre_process(lines)
-    
-    def compute(left, right):
-        return _PRIORITY_MAPPING[next(iter(left & right))]
+def _pre_process_part2(lines: Iterable[str]) -> Iterable[ElementPart2]:
+    i = 0
+    acc = ()
+    for l in lines:
+        i += 1
+        acc += (set(l),)
 
-    return sum((compute(*v) for v in values))
+        if i == 3:
+            yield acc
+            acc = ()
+            i = 0
+
+
+class Mode(Enum):
+    one = 0
+    two = 1
+
+
+def calculate(mode: Mode):
+    lines = _retrieve_lines()
+
+    if mode == Mode.one:
+        values: Sequence[set[str]] = _pre_process_part1(lines)
+    elif mode == Mode.two:
+        values: Sequence[set[str]] = _pre_process_part2(lines)
+    else:
+        raise ValueError()
+    
+    def compute(elements: Sequence[Set[str]]):
+        return _PRIORITY_MAPPING[next(iter(functools.reduce((lambda s1, s2: s1 & s2), elements)))]
+
+    return sum((compute(v) for v in values))
