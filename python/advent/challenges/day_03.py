@@ -1,7 +1,6 @@
 from advent.common import file_utils
 from advent.common.parts import Part
 
-from enum import Enum
 from typing import Iterable, Set, Sequence, Tuple
 
 import functools
