@@ -6,8 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\..\..\_data\**\*.*">
+        <Link>resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="common\file_utils.fs" />
+    <Compile Include="challenges\day_1.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
   <ItemGroup>
     <PackageReference Include="PathLib" Version="0.9.7.1" />
