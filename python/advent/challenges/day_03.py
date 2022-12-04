@@ -10,16 +10,15 @@ import string
 _PRIORITY_MAPPING = { c: i+1 for i, c in enumerate(string.ascii_letters)}
 
 
-ElementPart1 = Tuple[Set[str], Set[str]]
-ElementPart2 = Tuple[Set[str], Set[str]]
+Element = Sequence[Set[str]]
 
-def _pre_process_part1(lines: Iterable[str]) -> Iterable[ElementPart1]:
+def _pre_process_part1(lines: Iterable[str]) -> Iterable[Element]:
     for l in lines:
         split_index = int(len(l) / 2)
         yield (set(l[:split_index]), set(l[split_index:]))
 
 
-def _pre_process_part2(lines: Iterable[str]) -> Iterable[ElementPart2]:
+def _pre_process_part2(lines: Iterable[str]) -> Iterable[Element]:
     i = 0
     acc = ()
     for l in lines:
