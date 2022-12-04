@@ -21,11 +21,11 @@ def _preprocess(lines: Iterable[str]) -> Iterable[Element]:
         yield (int(elf1_low), int(elf1_high)), (int(elf2_low), int(elf2_high))
 
 
-def _contains(assignment1: Tuple[int, int], assignment2: Tuple[int, int]):
+def _contains(assignment1: Tuple[int, int], assignment2: Tuple[int, int]) -> bool:
     return (assignment1[0] >= assignment2[0] and assignment1[1] <= assignment2[1])
 
 
-def _overlaps(assignment1: Tuple[int, int], assignment2: Tuple[int, int]):
+def _overlaps(assignment1: Tuple[int, int], assignment2: Tuple[int, int]) -> bool:
     return not ((assignment1[0] > assignment2[1]) or (assignment1[1] < assignment2[0]))
 
 
@@ -35,7 +35,7 @@ _COMPARE = {
 }
 
 
-def calculate(part: Part):
+def calculate(part: Part) -> int:
     lines = file_utils.read_challenge_input_lines("day_04.txt")
     values = _preprocess(lines)
     compare = _COMPARE[part]
