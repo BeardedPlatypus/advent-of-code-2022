@@ -25,12 +25,23 @@ def _contains(assignment1: Tuple[int, int], assignment2: Tuple[int, int]):
     return (assignment1[0] >= assignment2[0] and assignment1[1] <= assignment2[1])
 
 
-def calculate():
+def _overlaps(assignment1: Tuple[int, int], assignment2: Tuple[int, int]):
+    return not ((assignment1[0] > assignment2[1]) or (assignment1[1] < assignment2[0]))
+
+
+_COMPARE = {
+    Part.one: lambda x, y: _contains(x, y) or _contains(y, x),
+    Part.two: _overlaps
+}
+
+
+def calculate(part: Part):
     lines = file_utils.read_challenge_input_lines("day_04.txt")
     values = _preprocess(lines)
+    compare = _COMPARE[part]
 
     def compute(acc: int, elem: Element) -> int:
-        if _contains(elem[0], elem[1]) or _contains(elem[1], elem[0]):
+        if compare(elem[0], elem[1]):
             return acc + 1
         else:
             return acc
