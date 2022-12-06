@@ -1,4 +1,4 @@
-from challenges import day_01, day_02, day_03, day_04
+from challenges import day_01, day_02, day_03, day_04, day_05
 from advent.common.parts import Part
 import typer
 
@@ -15,6 +15,8 @@ mapping = {
     "3.2": lambda: day_03.calculate(Part.two),
     "4.1": lambda: day_04.calculate(Part.one),
     "4.2": lambda: day_04.calculate(Part.two),
+    "5.1": lambda: day_05.calculate(Part.one),
+    "5.2": lambda: day_05.calculate(Part.two),
 }
 
 
