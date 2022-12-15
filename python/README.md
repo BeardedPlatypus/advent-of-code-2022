@@ -12,4 +12,4 @@
 [day02]: /python/advent/challenges/day_02.py
 [day03]: /python/advent/challenges/day_03.py
 [day04]: /python/advent/challenges/day_04.py
-[day04]: /python/advent/challenges/day_05.py
+[day05]: /python/advent/challenges/day_05.py
